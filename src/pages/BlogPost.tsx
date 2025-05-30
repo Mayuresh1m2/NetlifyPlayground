@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown';
+import ContentRenderer from '../components/ContentRenderer';
 
 const BlogPost: React.FC = () => {
     const { slug } = useParams<{ slug: string }>();
@@ -14,12 +14,11 @@ const BlogPost: React.FC = () => {
             for (const path in files) {
                 const module: any = await files[path]();
                 if (module.slug === slug) {
-                    setContentType(module.contentType || 'markdown');
                     setContent(module.content || '');
+                    setContentType(module.contentType || 'markdown');
                     return;
                 }
             }
-
             setContent(null); // Not found
         })();
     }, [slug]);
@@ -28,13 +27,7 @@ const BlogPost: React.FC = () => {
 
     return (
         <section>
-            {contentType === 'html' ? (
-                <div dangerouslySetInnerHTML={{ __html: content }} />
-            ) : contentType === 'markdown' ? (
-                <ReactMarkdown>{content}</ReactMarkdown>
-            ) : (
-                <pre style={{ whiteSpace: 'pre-wrap' }}>{content}</pre>
-            )}
+            <ContentRenderer content={content} contentType={contentType ?? 'markdown'} />
         </section>
     );
 };
