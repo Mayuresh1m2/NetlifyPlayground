@@ -8,31 +8,28 @@ interface PostData {
     slug: string;
     title: string;
     summary: string;
-    date: string;
-    contentType: string;
-    content: string;
 }
 
 const Home: React.FC = () => {
     const [posts, setPosts] = useState<PostData[]>([]);
 
     useEffect(() => {
-        async function fetchPosts() {
-            const files = import.meta.glob('../blogs/*.json');
+        const files = import.meta.glob('../blogs/*.json');
 
-            const loadedPosts: PostData[] = await Promise.all(
-                Object.entries(files).map(async ([_, resolver]) => {
-                    const blog = await resolver() as { default: PostData };
-                    return blog.default;
-                })
-            );
-
-            loadedPosts.sort((a, b) => (a.date < b.date ? 1 : -1));
-
-            setPosts(loadedPosts);
-        }
-
-        fetchPosts();
+        (async () => {
+            const allPosts: PostData[] = [];
+            for (const path in files) {
+                const mod: any = await files[path]();
+                if (mod.slug && mod.title) {
+                    allPosts.push({
+                        slug: mod.slug,
+                        title: mod.title,
+                        summary: mod.summary || '',
+                    });
+                }
+            }
+            setPosts(allPosts);
+        })();
     }, []);
 
     return (
@@ -47,8 +44,7 @@ const Home: React.FC = () => {
                         <Card>
                             <CardContent>
                                 <Typography variant="h6">{post.title}</Typography>
-                                <Typography variant="body2" color="textSecondary">{post.date}</Typography>
-                                <Typography variant="body2" sx={{ mt: 1 }}>{post.summary}</Typography>
+                                <Typography variant="body2">{post.summary}</Typography>
                                 <Button component={Link} to={`/blog/${post.slug}`} sx={{ mt: 1 }}>Read More</Button>
                             </CardContent>
                         </Card>

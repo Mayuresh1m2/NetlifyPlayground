@@ -1,51 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
-
-interface Blog {
-    slug: string;
-    title: string;
-    summary: string;
-    date: string;
-    contentType: 'markdown' | 'html' | 'text';
-    content: string;
-}
 
 const BlogPost: React.FC = () => {
     const { slug } = useParams<{ slug: string }>();
-    const [blog, setBlog] = useState<Blog | null>(null);
+    const [content, setContent] = useState<string | null>(null);
+    const [contentType, setContentType] = useState<'markdown' | 'html' | 'text' | null>(null);
 
     useEffect(() => {
-        if (!slug) return;
+        const files = import.meta.glob('../blogs/*.json');
 
-        import(`../blogs/${slug}.json`)
-            .then(module => setBlog(module.default))
-            .catch(error => {
-                console.error('Failed to load blog:', error);
-                setBlog(null);
-            });
+        (async () => {
+            for (const path in files) {
+                const module: any = await files[path]();
+                if (module.slug === slug) {
+                    setContentType(module.contentType || 'markdown');
+                    setContent(module.content || '');
+                    return;
+                }
+            }
+
+            setContent(null); // Not found
+        })();
     }, [slug]);
 
-    if (blog === null) return <Typography>Loading or Blog not found...</Typography>;
+    if (!content) return <p>Loading or Blog not found...</p>;
 
     return (
-        <article>
-            <Typography variant="h3" gutterBottom>{blog.title}</Typography>
-            <Typography variant="subtitle1" color="textSecondary" gutterBottom>{blog.date}</Typography>
-
-            {blog.contentType === 'markdown' && (
-                <ReactMarkdown>{blog.content}</ReactMarkdown>
+        <section>
+            {contentType === 'html' ? (
+                <div dangerouslySetInnerHTML={{ __html: content }} />
+            ) : contentType === 'markdown' ? (
+                <ReactMarkdown>{content}</ReactMarkdown>
+            ) : (
+                <pre style={{ whiteSpace: 'pre-wrap' }}>{content}</pre>
             )}
-
-            {blog.contentType === 'html' && (
-                <div dangerouslySetInnerHTML={{ __html: blog.content }} />
-            )}
-
-            {blog.contentType === 'text' && (
-                <Typography>{blog.content}</Typography>
-            )}
-        </article>
+        </section>
     );
 };
 
