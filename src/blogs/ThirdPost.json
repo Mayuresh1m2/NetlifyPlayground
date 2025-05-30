@@ -1,0 +1,8 @@
+{
+  "slug": "ThirdPost",
+  "title": "My Third Post",
+  "summary": "Summary of the third post.",
+  "date": "2025-06-01",
+  "contentType": "text",
+  "content": "This is a blog post using text content.\n\n- List item 1\n- List item 2\n\nThis is a continuation of the text content."
+}

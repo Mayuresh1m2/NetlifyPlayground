@@ -1,0 +1,8 @@
+{
+  "slug": "SecondPost",
+  "title": "My Second Post",
+  "summary": "Summary of the second post.",
+  "date": "2025-06-01",
+  "contentType": "html",
+  "content": "<p>This is a blog post using <strong>HTML</strong> content.</p><ul><li>List item 1</li><li>List item 2</li></ul>"
+}

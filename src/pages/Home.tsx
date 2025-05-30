@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Card, CardContent, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
-import matter from 'gray-matter';
 import NewsletterSignup from '../components/NewsletterSignup';
 import ContactSection from '../components/ContactSection';
 
@@ -9,6 +8,9 @@ interface PostData {
     slug: string;
     title: string;
     summary: string;
+    date: string;
+    contentType: string;
+    content: string;
 }
 
 const Home: React.FC = () => {
@@ -16,17 +18,18 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         async function fetchPosts() {
-            const context = require.context('../blogs', false, /\.md$/);
-            const files = context.keys();
+            const files = import.meta.glob('../blogs/*.json');
 
-            const posts = await Promise.all(files.map(async (file: string) => {
-                const content = await fetch(context(file)).then(res => res.text());
-                const { data } = matter(content);
-                const slug = file.replace('./', '').replace('.md', '');
-                return { slug, title: data.title, summary: data.summary } as PostData;
-            }));
+            const loadedPosts: PostData[] = await Promise.all(
+                Object.entries(files).map(async ([_, resolver]) => {
+                    const blog = await resolver() as { default: PostData };
+                    return blog.default;
+                })
+            );
 
-            setPosts(posts);
+            loadedPosts.sort((a, b) => (a.date < b.date ? 1 : -1));
+
+            setPosts(loadedPosts);
         }
 
         fetchPosts();
@@ -44,7 +47,8 @@ const Home: React.FC = () => {
                         <Card>
                             <CardContent>
                                 <Typography variant="h6">{post.title}</Typography>
-                                <Typography variant="body2">{post.summary}</Typography>
+                                <Typography variant="body2" color="textSecondary">{post.date}</Typography>
+                                <Typography variant="body2" sx={{ mt: 1 }}>{post.summary}</Typography>
                                 <Button component={Link} to={`/blog/${post.slug}`} sx={{ mt: 1 }}>Read More</Button>
                             </CardContent>
                         </Card>

@@ -1,0 +1,8 @@
+{
+  "slug": "IntroPost",
+  "title": "My First Blog Post",
+  "summary": "A brief summary of my first post.",
+  "date": "2025-05-31",
+  "contentType": "markdown",
+  "content": "# Hello World\n\nThis is **Markdown** content with *formatting*."
+}
