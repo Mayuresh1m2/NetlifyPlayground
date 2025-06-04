@@ -133,7 +133,7 @@ const BlogPage: React.FC = () => {
     if (selectedPostSlug && currentPost) {
         // Individual Post View
         return (
-            <Box sx={{ py: 2 }}>
+            <Box sx={{ py: { xs: 2, sm: 3, md: 4 } }}> {/* Standardized padding */}
                 <Button
                     startIcon={<TocIcon />}
                     onClick={handleBackToList}
@@ -173,7 +173,7 @@ const BlogPage: React.FC = () => {
 
     // Blog List View
     return (
-        <Box sx={{ py: 2 }}>
+        <Box sx={{ py: { xs: 2, sm: 3, md: 4 } }}>
             <Typography variant="h5" gutterBottom sx={{ mb: 3, color: '#6B4226' }}>
                 Blog Posts
             </Typography>

@@ -1,8 +1,8 @@
 {
-  "slug": "IntroPost",
-  "title": "My First Blog Post",
-  "summary": "A brief summary of my first post.",
-  "date": "2025-05-31",
+  "slug": "scalable-microservices-architecture",
+  "title": "Architecting Scalable Microservices",
+  "summary": "A deep dive into patterns and practices for building robust and scalable microservice architectures.",
+  "date": "2025-06-01",
   "contentType": "markdown",
-  "content": "# Hello World\n\nThis is **Markdown** content with *formatting*."
+  "content": "This post explores key considerations for designing microservices, including service discovery, fault tolerance, and API gateway patterns. We'll touch upon technologies like Kubernetes and share lessons learned from real-world implementations."
 }

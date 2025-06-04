@@ -15,7 +15,7 @@ const Footer: React.FC = () => (
     >
         <Container maxWidth="md">
             <Typography variant="body2" sx={{ color: '#8B5E3C' /* Using a theme color */ }}>
-                © {new Date().getFullYear()} My Personal Website
+                © {new Date().getFullYear()} Developer Portfolio
             </Typography>
         </Container>
     </Box>
