@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Container, Button, Box, AppBar, Toolbar, Typography } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 import Footer from './components/Footer';
 import AboutMePage from './pages/AboutMePage';
@@ -19,36 +21,56 @@ const App: React.FC = () => {
 
     useEffect(() => {
         const handleWheel = (event: WheelEvent) => {
+            // --- CONSOLE LOG ADDED FOR DEBUGGING ---
+            console.log(`handleWheel event: deltaX=${event.deltaX}, deltaY=${event.deltaY}, currentSection=${currentSection}, isScrolling=${isScrolling}`);
+
             if (isScrolling) return;
 
             const scrollThreshold = 20; // Slightly increased threshold
             let navigated = false;
 
+            // --- CONSOLE LOG ADDED FOR DEBUGGING ---
+            console.log(`Values before logic: abs(deltaX)=${Math.abs(event.deltaX)}, abs(deltaY)=${Math.abs(event.deltaY)}, scrollThreshold=${scrollThreshold}`);
+
             if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) { // Horizontal
+                // --- CONSOLE LOG ADDED FOR DEBUGGING ---
+                console.log("Processing horizontal scroll");
                 if (event.deltaX > scrollThreshold && currentSection === "About Me") {
+                    console.log("Condition met: Navigating About Me -> Contact");
                     setCurrentSection("Contact");
                     navigated = true;
                 } else if (event.deltaX < -scrollThreshold && currentSection === "Contact") {
+                    console.log("Condition met: Navigating Contact -> About Me");
                     setCurrentSection("About Me");
                     navigated = true;
                 }
             } else { // Vertical
+                // --- CONSOLE LOG ADDED FOR DEBUGGING ---
+                console.log("Processing vertical scroll");
                 if (event.deltaY > scrollThreshold && currentSection === "About Me") {
+                    console.log("Condition met: Navigating About Me -> Blog");
                     setCurrentSection("Blog");
                     navigated = true;
                 } else if (event.deltaY < -scrollThreshold && currentSection === "Blog") {
+                    console.log("Condition met: Navigating Blog -> About Me");
                     setCurrentSection("About Me");
                     navigated = true;
                 }
             }
 
             if (navigated) {
+                console.log(`Navigation occurred, setting isScrolling=true. New section should be ${currentSection} (but state update is async)`);
                 setIsScrolling(true);
-                setTimeout(() => setIsScrolling(false), 700); // Cooldown period for scroll
+                setTimeout(() => {
+                    console.log("setIsScrolling(false) after timeout.");
+                    setIsScrolling(false);
+                }, 700); // Cooldown period for scroll
+            } else {
+                console.log("No navigation condition met.");
             }
         };
 
-        window.addEventListener('wheel', handleWheel, { passive: false }); // Consider passive based on final behavior
+        window.addEventListener('wheel', handleWheel, { passive: false });
         return () => {
             window.removeEventListener('wheel', handleWheel);
         };
@@ -76,16 +98,34 @@ const App: React.FC = () => {
         }
     }, [displayedSectionKey]);
 
-    const NavButton = ({ sectionName }: { sectionName: Section }) => (
+    const NavButton = ({ sectionName, startIcon, endIcon }: {
+        sectionName: Section;
+        startIcon?: React.ReactNode;
+        endIcon?: React.ReactNode;
+    }) => (
         <Button
             variant={currentSection === sectionName ? "contained" : "text"}
             onClick={() => setCurrentSection(sectionName)}
+            startIcon={startIcon}
+            endIcon={endIcon}
             sx={{
                 mx: 1,
-                color: currentSection === sectionName ? '#FFF' : '#6B4226', // White text for contained, theme color for text
-                bgcolor: currentSection === sectionName ? '#6B4226' : 'transparent', // Theme color for contained background
+                minWidth: 'auto', // Allow button to be smaller if only icon + short text
+                paddingLeft: endIcon ? '12px' : (startIcon ? '8px' : '12px'), // Adjust padding based on icons
+                paddingRight: startIcon ? '12px' : (endIcon ? '8px' : '12px'),
+                color: currentSection === sectionName ? '#FFF' : '#6B4226',
+                bgcolor: currentSection === sectionName ? '#6B4226' : 'transparent',
                 '&:hover': {
-                    bgcolor: currentSection === sectionName ? '#5A3216' : '#F0EAE6', // Darker theme color on hover for contained
+                    bgcolor: currentSection === sectionName ? '#5A3216' : '#F0EAE6',
+                },
+                // Styling for the icons themselves if needed
+                '.MuiButton-startIcon .MuiSvgIcon-root': {
+                    fontSize: '1.1rem', // Example size
+                    marginRight: '4px', // Space between icon and text
+                },
+                '.MuiButton-endIcon .MuiSvgIcon-root': {
+                    fontSize: '1.1rem', // Example size
+                    marginLeft: '4px', // Space between text and icon
                 }
             }}
         >
@@ -101,10 +141,16 @@ const App: React.FC = () => {
                         <Typography variant="h6" sx={{ color: '#6B4226', fontWeight: 'bold' }}>
                             MySite
                         </Typography>
-                        <Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <NavButton sectionName="About Me" />
-                            <NavButton sectionName="Contact" />
-                            <NavButton sectionName="Blog" />
+                            <NavButton
+                                sectionName="Contact"
+                                endIcon={currentSection === "About Me" ? <ArrowForwardIcon sx={{ fontSize: '1rem' }} /> : undefined}
+                            />
+                            <NavButton
+                                sectionName="Blog"
+                                endIcon={currentSection === "About Me" ? <ArrowDownwardIcon sx={{ fontSize: '1rem' }} /> : undefined}
+                            />
                         </Box>
                     </Toolbar>
                 </Container>
