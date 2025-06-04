@@ -139,7 +139,7 @@ const App: React.FC = () => {
                 <Container maxWidth="md">
                     <Toolbar sx={{ justifyContent: 'space-between', padding: { xs: 0 } }}>
                         <Typography variant="h6" sx={{ color: '#6B4226', fontWeight: 'bold' }}>
-                            MySite
+                            Developer Portfolio
                         </Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <NavButton sectionName="About Me" />

@@ -1,5 +1,5 @@
 {
-  "content": "I am a developer with extensive experience building apps with React and Material UI. Passionate about writing clean, maintainable code and sharing knowledge through blogs and newsletters.",
-  "contentType": "text",
-  "profileImageUrl": ""
+  "profileImageUrl": "https://via.placeholder.com/250/6B4226/FFFFFF?text=Backend+Dev",
+  "contentType": "markdown",
+  "content": "# Seasoned Backend Architect & Developer\n\nWith 14 years of dedicated experience, I specialize in architecting, building, and scaling robust systems for both web and mobile (Android) platforms. My focus is on creating efficient, maintainable, and high-performing backend solutions.\n\n## Key Expertise\n\n*   **Backend Development**: Java, Python, Go\n*   **Scalable Systems & Microservices**: Designing and implementing distributed systems that handle growth.\n*   **API Design & Development**: Proficient in creating RESTful APIs and GraphQL interfaces.\n*   **Cloud Platforms**: Extensive experience with AWS and GCP services.\n*   **Databases**: Expertise in SQL (PostgreSQL) and NoSQL (MongoDB, Cassandra) databases.\n*   **Web Application Architecture**: Strong understanding of full-stack system design.\n*   **DevOps & CI/CD**: Implementing continuous integration and deployment pipelines.\n*   **Android Development**: Solid background in Android application development (Kotlin, Java)."
 }

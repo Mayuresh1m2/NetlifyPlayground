@@ -1,8 +1,8 @@
 {
-  "slug": "SecondPost",
-  "title": "My Second Post",
-  "summary": "Summary of the second post.",
-  "date": "2025-06-01",
-  "contentType": "html",
-  "content": "<p>This is a blog post using <strong>HTML</strong> content.</p><ul><li>List item 1</li><li>List item 2</li></ul>"
+  "slug": "sql-vs-nosql-databases",
+  "title": "Choosing the Right Database: SQL vs. NoSQL for Modern Apps",
+  "summary": "An analysis of trade-offs between relational and NoSQL databases in the context of different application needs.",
+  "date": "2025-06-05",
+  "contentType": "markdown",
+  "content": "When building modern applications, database selection is crucial. This article compares SQL databases like PostgreSQL with NoSQL options like MongoDB and Cassandra, discussing use cases, consistency models, and scalability."
 }

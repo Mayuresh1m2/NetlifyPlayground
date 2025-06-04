@@ -1,8 +1,8 @@
 {
-  "slug": "ThirdPost",
-  "title": "My Third Post",
-  "summary": "Summary of the third post.",
-  "date": "2025-06-01",
-  "contentType": "text",
-  "content": "This is a blog post using text content.\n\n- List item 1\n- List item 2\n\nThis is a continuation of the text content."
+  "slug": "effective-api-design",
+  "title": "Effective API Design: Best Practices for RESTful Services",
+  "summary": "Guidelines for designing clean, maintainable, and developer-friendly RESTful APIs.",
+  "date": "2025-06-10",
+  "contentType": "markdown",
+  "content": "Well-designed APIs are essential for service-oriented architectures. We'll cover best practices for resource naming, versioning, authentication, and error handling in RESTful API design."
 }
