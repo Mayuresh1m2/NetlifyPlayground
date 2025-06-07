@@ -4,20 +4,20 @@ const warmTheme = createTheme({
     palette: {
         mode: 'light',
         primary: {
-            main: '#5D737E',  // New primary color
-            contrastText: '#FFFFFF', // Contrast for new primary
+            main: '#007BFF',  // Professional Blue
+            contrastText: '#FFFFFF',
         },
         secondary: {
-            main: '#8C9EA3',  // New secondary color
-            contrastText: '#000000', // Contrast for new secondary
+            main: '#28A745',  // Professional Green
+            contrastText: '#FFFFFF',
         },
         background: {
-            default: '#EAEAEA',  // New background default
-            paper: '#F5F5F5',    // New background paper
+            default: '#F8F9FA',  // Off-white
+            paper: '#FFFFFF',    // White
         },
         text: {
-            primary: '#333333', // New text primary
-            secondary: '#555555', // New text secondary
+            primary: '#212529', // Near black
+            secondary: '#495057', // Dark gray
         },
     },
     typography: {

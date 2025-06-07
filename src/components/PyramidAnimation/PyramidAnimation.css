@@ -5,7 +5,7 @@
   flex-direction: column; /* Stack layers vertically */
   align-items: center; /* Center layers horizontally */
   padding: 20px;
-  background-color: #f4f7f6; /* Light gray background for the container */
+  background-color: #F8F9FA; /* Theme background.default */
   width: 100%;
   max-width: 600px; /* Max width of the pyramid */
   margin: 20px auto;
@@ -39,32 +39,32 @@
 
 /* Layer 4 (Top): Architectural Styles & Patterns */
 .layer-architecture {
-  background-color: #a9cce3; /* Muted sky blue */
-  color: #154360; /* Dark blue text for contrast */
+  background-color: #79D48A; /* Lighter Green (derived from secondary.main #28A745) */
+  color: #FFFFFF; /* White text for contrast */
   width: 60%; /* Narrowest layer */
   min-height: 50px;
 }
 
 /* Layer 3: Design Patterns */
 .layer-design-patterns {
-  background-color: #5499c7; /* Mid-tone blue */
-  color: #f0f0f0; /* Light text */
+  background-color: #28A745; /* Theme secondary.main (Green) */
+  color: #FFFFFF; /* White text */
   width: 75%;
   min-height: 55px;
 }
 
 /* Layer 2: Development Principles */
 .layer-dev-principles {
-  background-color: #2471a3; /* Deeper blue */
-  color: #f0f0f0; /* Light text */
+  background-color: #007BFF; /* Theme primary.main (Blue) */
+  color: #FFFFFF; /* White text */
   width: 90%;
   min-height: 60px;
 }
 
 /* Layer 1 (Bottom): Fundamentals */
 .layer-fundamentals {
-  background-color: #154360; /* Darkest foundational blue */
-  color: #f0f0f0; /* Light text */
+  background-color: #0056b3; /* Darker Blue (derived from primary.main #007BFF) */
+  color: #FFFFFF; /* White text */
   width: 100%; /* Widest layer */
   min-height: 65px;
   margin-bottom: 0; /* No margin for the last layer */

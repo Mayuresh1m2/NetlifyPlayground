@@ -5,18 +5,18 @@
   height: 300px;    /* Fixed height */
   position: relative;
   margin: 20px auto; /* Center it and add some margin */
-  border: 1px solid #DCDCDC; /* Theme divider (approx, from new palette) */
+  border: 1px solid #dee2e6; /* Updated divider color (e.g., gray-300 from a typical palette) */
   overflow: hidden; /* Hide packets that go outside */
-  background-color: #F5F5F5; /* Theme background.paper (from new palette) */
+  background-color: #FFFFFF; /* Theme background.paper (White) */
 }
 
 .node {
   width: 20px;
   height: 20px;
-  background-color: #5D737E; /* Theme primary.main */
+  background-color: #007BFF; /* New Theme primary.main (Blue) */
   border-radius: 50%;
   position: absolute;
-  box-shadow: 0 0 4px #5D737E, 0 0 8px #5D737E; /* Adjusted shadow to match new color */
+  box-shadow: 0 0 4px #007BFF, 0 0 8px #007BFF; /* Adjusted shadow */
 }
 
 /* Positioning of nodes - adjust as needed for your desired network layout */
@@ -27,7 +27,7 @@
 .node-5 { top: 50%; left: 90%; transform: translateY(-50%); }
 
 .line {
-  background-color: #8C9EA3; /* Theme secondary.main */
+  background-color: #495057; /* New Theme text.secondary (Dark Gray) */
   position: absolute;
   height: 2px;
   transform-origin: left center;
@@ -79,11 +79,11 @@
 .packet {
   width: 8px;
   height: 8px;
-  background-color: #A7B4B8; /* Lighter shade of secondary, or distinct accent like Blue Grey 200 */
+  background-color: #28A745; /* New Theme secondary.main (Green) */
   border-radius: 50%;
   position: absolute;
   opacity: 0; /* Start invisible */
-  box-shadow: 0 0 3px #A7B4B8, 0 0 6px #A7B4B8; /* Adjusted shadow to match new color */
+  box-shadow: 0 0 3px #28A745, 0 0 6px #28A745; /* Adjusted shadow */
   /* Animation will be defined to move along paths */
 }
 
