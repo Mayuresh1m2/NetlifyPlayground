@@ -1,7 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Grid, Card, CardContent, Typography, Button, Box, IconButton } from '@mui/material';
 import { ArrowBack as ArrowBackIcon, ArrowForward as ArrowForwardIcon, Toc as TocIcon } from '@mui/icons-material';
 import ContentRenderer from '../components/ContentRenderer'; // Ensure this path is correct
+import usePerformanceMeasure from '../hooks/usePerformanceMeasure'; // Import the hook for page load
+import { usePerformanceContext } from '../contexts/PerformanceContext'; // Import context for custom timing
 
 interface PostSummary {
     slug: string;
@@ -16,10 +18,14 @@ interface PostFull extends PostSummary {
 }
 
 const BlogPage: React.FC = () => {
+    usePerformanceMeasure('BlogPage'); // 1. Instrument BlogPage initial load
+    const { recordTiming } = usePerformanceContext(); // For custom post load timing
+
     const [posts, setPosts] = useState<PostSummary[]>([]);
     const [selectedPostSlug, setSelectedPostSlug] = useState<string | null>(null);
     const [currentPost, setCurrentPost] = useState<PostFull | null>(null);
     const [isLoadingPost, setIsLoadingPost] = useState<boolean>(false);
+    const postLoadStartTimeRef = useRef<number | null>(null); // Ref to store start time for post load
 
     // Fetch all blog post summaries
     useEffect(() => {
@@ -53,11 +59,11 @@ const BlogPage: React.FC = () => {
         }
 
         async function fetchPostContent() {
+            // Start timing for individual post load
+            postLoadStartTimeRef.current = performance.now();
             setIsLoadingPost(true);
-            // This assumes the same JSON files also contain the full 'content' field
-            // or reference to a markdown file. The structure from BlogPost.tsx was:
-            // module.content || '' and module.contentType || 'markdown'
-            const files = import.meta.glob('../blogs/*.json'); // Re-glob or pass module resolver
+
+            const files = import.meta.glob('../blogs/*.json');
             let foundPost: PostFull | null = null;
             for (const path in files) {
                 const module: any = await (files[path] as () => Promise<any>)();
@@ -65,21 +71,38 @@ const BlogPage: React.FC = () => {
                     foundPost = {
                         slug: module.slug,
                         title: module.title,
-                        summary: module.summary, // May not be needed here but good for consistency
-                        content: module.content || '', // Ensure 'content' field exists in your JSON
+                        summary: module.summary,
+                        content: module.content || '',
                         contentType: module.contentType || 'markdown',
                     };
                     break;
                 }
             }
             setCurrentPost(foundPost);
-            setIsLoadingPost(false);
+            // setIsLoadingPost(false) will be handled by the effect below, after timing is recorded
         }
 
         fetchPostContent();
     }, [selectedPostSlug]);
 
+    // Effect to record timing when currentPost is loaded and stop loading indicator
+    useEffect(() => {
+        if (currentPost && postLoadStartTimeRef.current !== null) {
+            const endTime = performance.now();
+            const duration = endTime - postLoadStartTimeRef.current;
+            recordTiming(`BlogPage-Post-${currentPost.slug}`, duration);
+            postLoadStartTimeRef.current = null; // Reset start time
+            setIsLoadingPost(false); // Now stop loading, after timing
+        }
+        // If currentPost becomes null (e.g. back to list), ensure loading is false.
+        else if (!currentPost) {
+             setIsLoadingPost(false);
+        }
+    }, [currentPost, recordTiming]);
+
+
     const handleSelectPost = (slug: string) => {
+        // selectedPostSlug change will trigger the fetch and timing logic above
         setSelectedPostSlug(slug);
     };
 
@@ -212,4 +235,4 @@ const BlogPage: React.FC = () => {
     );
 };
 
-export default BlogPage;
+export default React.memo(BlogPage);
