@@ -18,4 +18,4 @@ const ContentRenderer: React.FC<ContentRendererProps> = ({ content, contentType 
     }
 };
 
-export default React.memo(ContentRenderer);
+export default ContentRenderer;

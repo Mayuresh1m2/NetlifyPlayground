@@ -2,31 +2,60 @@ import React, { useEffect, useState } from 'react';
 import { Avatar, Box, Chip, Grid, Typography, CircularProgress } from '@mui/material';
 import ContentRenderer from '../components/ContentRenderer';
 import { DynamicSilhouette } from '../components';
-import usePerformanceMeasure from '../hooks/usePerformanceMeasure'; // Import the hook
 
 const AboutMePage: React.FC = () => {
-    usePerformanceMeasure('AboutMePage'); // Instrument AboutMePage component
-
     const [profileImageUrl, setProfileImageUrl] = useState<string>("");
-    const [mainContentMd, setMainContentMd] = useState<string>(""); // For headline & intro
-    const [skills, setSkills] = useState<string[]>([]); // For the keyExpertise array
+    const [mainContentMd, setMainContentMd] = useState<string>("");
+    const [skills, setSkills] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [contentType, setContentType] = useState<'markdown' | 'html' | 'text'>('markdown');
 
 
     useEffect(() => {
-        async function fetchAboutData() {
+        async function fetchAndParseAbout() {
             setIsLoading(true);
             try {
+                // The dynamic import() needs to be exactly as written for Vite/Vitest to handle it,
+                // especially with mocking. Using a variable for the path might complicate mocking.
                 const aboutModule = await import('../data/about.json');
 
                 setProfileImageUrl(aboutModule.profileImageUrl);
                 setContentType(aboutModule.contentType as 'markdown' | 'html' | 'text' || 'markdown');
-                setMainContentMd(aboutModule.content || ""); // Main markdown content
-                setSkills(aboutModule.keyExpertise || []); // Directly use the keyExpertise array
 
+                const rawContent = aboutModule.content || "";
+                const expertiseTitle = "## Key Expertise";
+                const expertiseTitleAlternate = "### Key Expertise"; // Handle h3 as well
+
+                let expertiseIndex = rawContent.indexOf(expertiseTitle);
+                let actualExpertiseTitle = expertiseTitle;
+
+                if (expertiseIndex === -1) {
+                    expertiseIndex = rawContent.indexOf(expertiseTitleAlternate);
+                    actualExpertiseTitle = expertiseTitleAlternate;
+                }
+
+                if (expertiseIndex !== -1) {
+                    setMainContentMd(rawContent.substring(0, expertiseIndex).trim());
+                    const skillsSection = rawContent.substring(expertiseIndex + actualExpertiseTitle.length).trim();
+
+                    const skillItems = skillsSection.split('\n')
+                        .map(line => line.trim())
+                        .filter(line => line.startsWith('*   ') || line.startsWith('-   '))
+                        .map(line => {
+                            // Remove list marker (e.g., "*   ") and any bolding around the skill name itself
+                            let skill = line.substring(line.indexOf('   ') + 3).trim();
+                            // Example: "**Backend Development**: Java, Python, Go" -> "Backend Development: Java, Python, Go"
+                            skill = skill.replace(/\*\*(.*?)\*\*:(.*)/, '$1:$2'); // More specific: removes ** from "Skill Name:**"
+                            skill = skill.replace(/\*\*(.*?)\*\*/, '$1'); // General bold removal if any
+                            return skill;
+                        });
+                    setSkills(skillItems);
+                } else {
+                    setMainContentMd(rawContent);
+                    setSkills([]);
+                }
             } catch (error) {
-                console.error("Error fetching about data:", error);
+                console.error("Error fetching or parsing about data:", error);
                 setMainContentMd("Error loading content.");
                 setSkills([]);
             } finally {
@@ -34,7 +63,7 @@ const AboutMePage: React.FC = () => {
             }
         }
 
-        fetchAboutData();
+        fetchAndParseAbout();
     }, []);
 
     if (isLoading) {
@@ -110,4 +139,4 @@ const AboutMePage: React.FC = () => {
     );
 };
 
-export default React.memo(AboutMePage);
+export default AboutMePage;

@@ -7,14 +7,10 @@ import Footer from './components/Footer';
 import AboutMePage from './pages/AboutMePage';
 import ContactPage from './pages/ContactPage';
 import BlogPage from './pages/BlogPage';
-import usePerformanceMeasure from './hooks/usePerformanceMeasure'; // Import the hook
-import PerformanceMonitor from './components/PerformanceMonitor'; // Import PerformanceMonitor
 
 type Section = "About Me" | "Contact" | "Blog";
 
 const App: React.FC = () => {
-    usePerformanceMeasure('App'); // Instrument App component
-
     const [currentSection, setCurrentSection] = useState<Section>("About Me");
     const [opacity, setOpacity] = useState(1);
     const [displayedSectionKey, setDisplayedSectionKey] = useState<Section>("About Me");
@@ -173,7 +169,6 @@ const App: React.FC = () => {
                 </Box>
             </Container>
             <Footer />
-            <PerformanceMonitor /> {/* Add PerformanceMonitor here */}
         </Box>
     );
 };

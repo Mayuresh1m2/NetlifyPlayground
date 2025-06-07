@@ -4,20 +4,18 @@ import './PyramidAnimation.css';
 
 const PyramidAnimation: React.FC = () => {
   return (
-    <div className="pyramid-container" data-testid="pyramid-animation-container">
-      <div className="pyramid">
-        <div className="layer layer-1">
-          <span className="label">Mastering Fundamentals</span>
-        </div>
-        <div className="layer layer-2">
-          <span className="label">Problem Solving & Critical Thinking</span>
-        </div>
-        <div className="layer layer-3">
-          <span className="label">Continuous Learning & Adaptability</span>
-        </div>
-        <div className="layer layer-4">
-          <span className="label">Collaboration & Communication</span>
-        </div>
+    <div className="new-pyramid-container" data-testid="pyramid-animation-container">
+      <div className="pyramid-layer layer-architecture">
+        <span className="layer-title">Architectural Styles & Patterns</span>
+      </div>
+      <div className="pyramid-layer layer-design-patterns">
+        <span className="layer-title">Design Patterns</span>
+      </div>
+      <div className="pyramid-layer layer-dev-principles">
+        <span className="layer-title">Development Principles</span>
+      </div>
+      <div className="pyramid-layer layer-fundamentals">
+        <span className="layer-title">Fundamentals</span>
       </div>
     </div>
   );
