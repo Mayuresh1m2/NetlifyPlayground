@@ -1,10 +1,15 @@
 import React from 'react';
 import { Typography, Link, Box } from '@mui/material';
 import { NetworkAnimation } from '../components';
+import usePerformanceMeasure from '../hooks/usePerformanceMeasure'; // Import the hook
 
-const ContactPage: React.FC = () => (
-    <Box sx={{
-        py: { xs: 2, sm: 3, md: 4 }, // Standardized responsive vertical padding
+
+const ContactPage: React.FC = () => {
+    usePerformanceMeasure('ContactPage'); // Instrument ContactPage component
+
+    return (
+        <Box sx={{
+            py: { xs: 2, sm: 3, md: 4 }, // Standardized responsive vertical padding
         textAlign: 'center', // Center align content
         maxWidth: '600px', // Max width for content readability
         mx: 'auto' // Center the box itself
@@ -62,6 +67,7 @@ const ContactPage: React.FC = () => (
         </Button>
         */}
     </Box>
-);
+    );
+};
 
-export default ContactPage;
+export default React.memo(ContactPage);
