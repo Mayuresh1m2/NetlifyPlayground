@@ -127,8 +127,8 @@ const App: React.FC = () => {
                 '.MuiButton-endIcon .MuiSvgIcon-root': {
                     fontSize: '1.1rem', // Example size
                     marginLeft: '4px', // Space between text and icon
-                }
-            }}
+                } // End of styles object
+            })}
         >
             {sectionName}
         </Button>
