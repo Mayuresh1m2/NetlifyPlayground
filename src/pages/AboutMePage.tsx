@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar, Box, Chip, Grid, Typography, CircularProgress } from '@mui/material';
 import ContentRenderer from '../components/ContentRenderer';
+import { DynamicSilhouette } from '../components';
 
 const AboutMePage: React.FC = () => {
     const [profileImageUrl, setProfileImageUrl] = useState<string>("");
@@ -76,20 +77,23 @@ const AboutMePage: React.FC = () => {
     return (
         <Box sx={{ py: { xs: 2, sm: 3, md: 4 } }}>
             <Grid container spacing={{ xs: 2, md: 4 }} alignItems="flex-start"> {/* Changed to flex-start for better alignment if text is short */}
-                <Grid item xs={12} md={4} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-                    <Avatar
-                        alt="Backend Developer" // Updated alt text
-                        src={profileImageUrl}
-                        variant="rounded" // Makes it a square with rounded corners, common for profiles
-                        sx={{
-                            width: { xs: 150, sm: 200, md: 220 }, // Responsive size
-                            height: { xs: 150, sm: 200, md: 220 },
-                            mb: { xs: 2, md: 0 }, // Margin bottom on small screens, none on medium+
-                            mx: { xs: 'auto', md: 0 },
-                            boxShadow: 3,
-                            border: '3px solid #FFF8F0' // Optional: subtle border
-                        }}
-                    />
+                <Grid item xs={12} md={4} sx={{ textAlign: { xs: 'center', md: 'center' } }}> {/* Centering content in this grid item */}
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}> {/* Wrapper Box */}
+                        <Avatar
+                            alt="Backend Developer" // Updated alt text
+                            src={profileImageUrl}
+                            variant="rounded" // Makes it a square with rounded corners, common for profiles
+                            sx={{
+                                width: { xs: 150, sm: 200, md: 220 }, // Responsive size
+                                height: { xs: 150, sm: 200, md: 220 },
+                                // mb: { xs: 2, md: 0 }, // Margin bottom removed to be handled by wrapper or silhouette
+                                mx: 'auto', // Center avatar
+                                boxShadow: 3,
+                                border: '3px solid #FFF8F0' // Optional: subtle border
+                            }}
+                        />
+                        <DynamicSilhouette />
+                    </Box>
                 </Grid>
                 <Grid item xs={12} md={8}>
                     {/* ContentRenderer will handle the markdown for headline and intro */}

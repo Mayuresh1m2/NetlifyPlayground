@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Grid, Card, CardContent, Typography, Button, Box, IconButton } from '@mui/material';
 import { ArrowBack as ArrowBackIcon, ArrowForward as ArrowForwardIcon, Toc as TocIcon } from '@mui/icons-material';
 import ContentRenderer from '../components/ContentRenderer'; // Ensure this path is correct
+import { PyramidAnimation } from '../components';
 
 interface PostSummary {
     slug: string;
@@ -134,13 +135,15 @@ const BlogPage: React.FC = () => {
         // Individual Post View
         return (
             <Box sx={{ py: { xs: 2, sm: 3, md: 4 } }}> {/* Standardized padding */}
+                <PyramidAnimation />
                 <Button
                     startIcon={<TocIcon />}
                     onClick={handleBackToList}
                     sx={{
                         mb: 2,
                         color: '#6B4226',
-                        '&:hover': { bgcolor: '#F0EAE6' }
+                        '&:hover': { bgcolor: '#F0EAE6' },
+                        mt: 4 // Add margin top to separate from pyramid
                     }}
                 >
                     Back to Blog List
@@ -174,7 +177,8 @@ const BlogPage: React.FC = () => {
     // Blog List View
     return (
         <Box sx={{ py: { xs: 2, sm: 3, md: 4 } }}>
-            <Typography variant="h5" gutterBottom sx={{ mb: 3, color: '#6B4226' }}>
+            <PyramidAnimation />
+            <Typography variant="h5" gutterBottom sx={{ mb: 3, color: '#6B4226', mt: 4 /* Add margin top to separate from pyramid */ }}>
                 Blog Posts
             </Typography>
             {posts.length === 0 && <Typography>No blog posts available yet.</Typography>}

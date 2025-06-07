@@ -1,0 +1,99 @@
+/* DynamicSilhouette.css */
+.silhouette-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; /* Align to bottom for a standing appearance */
+  width: 150px; /* Width of the silhouette area */
+  height: 250px; /* Height of the silhouette area */
+  /* background-color: #f0f0f0; /* Optional: for visibility during development */
+  margin: 20px auto;
+}
+
+.silhouette {
+  position: relative;
+  width: 80px; /* Overall width of the silhouette figure */
+  height: 200px; /* Overall height of the silhouette figure */
+}
+
+.head {
+  width: 40px;
+  height: 40px;
+  background-color: #333;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.body {
+  width: 50px;
+  height: 100px;
+  background-color: #333;
+  position: absolute;
+  top: 30px; /* Positioned below the head */
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 25px 25px 0 0; /* Rounded shoulders */
+  z-index: 1;
+}
+
+.arm {
+  width: 15px;
+  height: 70px;
+  background-color: #333;
+  position: absolute;
+  top: 45px; /* Start from shoulder height */
+  border-radius: 7.5px; /* Rounded arm */
+  z-index: 0; /* Behind body or align as needed */
+}
+
+.arm-left {
+  left: 5px; /* Position to the left of the body */
+  transform-origin: top center;
+}
+
+.arm-right {
+  right: 5px; /* Position to the right of the body */
+  transform-origin: top center;
+  animation: wave-animation 2.5s infinite ease-in-out; /* Waving animation */
+}
+
+.leg {
+  width: 20px;
+  height: 80px;
+  background-color: #333;
+  position: absolute;
+  bottom: 0; /* Start from the bottom */
+  border-radius: 10px 10px 0 0; /* Slightly rounded top of legs */
+}
+
+.leg-left {
+  left: 15px; /* Positioned to the left under the body */
+}
+
+.leg-right {
+  right: 15px; /* Positioned to the right under the body */
+}
+
+/* Waving animation for the right arm */
+@keyframes wave-animation {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(-60deg); } /* Wave up */
+  40% { transform: rotate(-40deg); } /* Wave down slightly */
+  60% { transform: rotate(-60deg); } /* Wave up again */
+  80% { transform: rotate(0deg); }   /* Back to rest */
+  100% { transform: rotate(0deg); }
+}
+
+/* Optional: Subtle bobbing animation for the whole silhouette */
+.silhouette {
+  animation: bob-animation 3s infinite ease-in-out;
+}
+
+@keyframes bob-animation {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0px); }
+}

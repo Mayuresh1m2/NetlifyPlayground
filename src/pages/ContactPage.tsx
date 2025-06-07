@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography, Link, Box } from '@mui/material';
+import { NetworkAnimation } from '../components';
 
 const ContactPage: React.FC = () => (
     <Box sx={{
@@ -8,6 +9,7 @@ const ContactPage: React.FC = () => (
         maxWidth: '600px', // Max width for content readability
         mx: 'auto' // Center the box itself
     }}>
+        <NetworkAnimation />
         <Typography
             variant="h4" // Slightly larger heading
             component="h1"
