@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Grid, Card, CardContent, Typography, Button, Box, IconButton } from '@mui/material';
 import { ArrowBack as ArrowBackIcon, ArrowForward as ArrowForwardIcon, Toc as TocIcon } from '@mui/icons-material';
 import ContentRenderer from '../components/ContentRenderer'; // Ensure this path is correct
-import usePerformanceMeasure from '../hooks/usePerformanceMeasure'; // Import the hook for page load
-import { usePerformanceContext } from '../contexts/PerformanceContext'; // Import context for custom timing
+import { PyramidAnimation } from '../components';
 
 interface PostSummary {
     slug: string;
@@ -18,14 +17,10 @@ interface PostFull extends PostSummary {
 }
 
 const BlogPage: React.FC = () => {
-    usePerformanceMeasure('BlogPage'); // 1. Instrument BlogPage initial load
-    const { recordTiming } = usePerformanceContext(); // For custom post load timing
-
     const [posts, setPosts] = useState<PostSummary[]>([]);
     const [selectedPostSlug, setSelectedPostSlug] = useState<string | null>(null);
     const [currentPost, setCurrentPost] = useState<PostFull | null>(null);
     const [isLoadingPost, setIsLoadingPost] = useState<boolean>(false);
-    const postLoadStartTimeRef = useRef<number | null>(null); // Ref to store start time for post load
 
     // Fetch all blog post summaries
     useEffect(() => {
@@ -59,11 +54,11 @@ const BlogPage: React.FC = () => {
         }
 
         async function fetchPostContent() {
-            // Start timing for individual post load
-            postLoadStartTimeRef.current = performance.now();
             setIsLoadingPost(true);
-
-            const files = import.meta.glob('../blogs/*.json');
+            // This assumes the same JSON files also contain the full 'content' field
+            // or reference to a markdown file. The structure from BlogPost.tsx was:
+            // module.content || '' and module.contentType || 'markdown'
+            const files = import.meta.glob('../blogs/*.json'); // Re-glob or pass module resolver
             let foundPost: PostFull | null = null;
             for (const path in files) {
                 const module: any = await (files[path] as () => Promise<any>)();
@@ -71,38 +66,21 @@ const BlogPage: React.FC = () => {
                     foundPost = {
                         slug: module.slug,
                         title: module.title,
-                        summary: module.summary,
-                        content: module.content || '',
+                        summary: module.summary, // May not be needed here but good for consistency
+                        content: module.content || '', // Ensure 'content' field exists in your JSON
                         contentType: module.contentType || 'markdown',
                     };
                     break;
                 }
             }
             setCurrentPost(foundPost);
-            // setIsLoadingPost(false) will be handled by the effect below, after timing is recorded
+            setIsLoadingPost(false);
         }
 
         fetchPostContent();
     }, [selectedPostSlug]);
 
-    // Effect to record timing when currentPost is loaded and stop loading indicator
-    useEffect(() => {
-        if (currentPost && postLoadStartTimeRef.current !== null) {
-            const endTime = performance.now();
-            const duration = endTime - postLoadStartTimeRef.current;
-            recordTiming(`BlogPage-Post-${currentPost.slug}`, duration);
-            postLoadStartTimeRef.current = null; // Reset start time
-            setIsLoadingPost(false); // Now stop loading, after timing
-        }
-        // If currentPost becomes null (e.g. back to list), ensure loading is false.
-        else if (!currentPost) {
-             setIsLoadingPost(false);
-        }
-    }, [currentPost, recordTiming]);
-
-
     const handleSelectPost = (slug: string) => {
-        // selectedPostSlug change will trigger the fetch and timing logic above
         setSelectedPostSlug(slug);
     };
 
@@ -157,18 +135,20 @@ const BlogPage: React.FC = () => {
         // Individual Post View
         return (
             <Box sx={{ py: { xs: 2, sm: 3, md: 4 } }}> {/* Standardized padding */}
+                <PyramidAnimation />
                 <Button
                     startIcon={<TocIcon />}
                     onClick={handleBackToList}
                     sx={{
                         mb: 2,
-                        color: '#6B4226',
-                        '&:hover': { bgcolor: '#F0EAE6' }
+                        color: 'primary.main', // Use theme color
+                        '&:hover': { bgcolor: 'action.hover' }, // Use theme hover
+                        mt: 4 // Add margin top to separate from pyramid
                     }}
                 >
                     Back to Blog List
                 </Button>
-                <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#6B4226', mt: 1, mb: 2 }}>
+                <Typography variant="h4" component="h1" gutterBottom sx={{ color: 'text.primary', mt: 1, mb: 2 }}> {/* Use theme text color */}
                     {currentPost.title}
                 </Typography>
                 <ContentRenderer content={currentPost.content} contentType={currentPost.contentType || 'markdown'} />
@@ -177,7 +157,8 @@ const BlogPage: React.FC = () => {
                         startIcon={<ArrowBackIcon />}
                         onClick={() => navigatePost('prev')}
                         variant="outlined"
-                        sx={{ borderColor: '#8B5E3C', color: '#8B5E3C', '&:hover': { borderColor: '#6B4226', bgcolor: '#F0EAE6', color: '#6B4226' } }}
+                        color="primary" // Use theme color
+                        sx={{ '&:hover': { bgcolor: 'action.hover' } }}
                     >
                         Previous
                     </Button>
@@ -185,7 +166,8 @@ const BlogPage: React.FC = () => {
                         endIcon={<ArrowForwardIcon />}
                         onClick={() => navigatePost('next')}
                         variant="outlined"
-                        sx={{ borderColor: '#8B5E3C', color: '#8B5E3C', '&:hover': { borderColor: '#6B4226', bgcolor: '#F0EAE6', color: '#6B4226' } }}
+                        color="primary" // Use theme color
+                        sx={{ '&:hover': { bgcolor: 'action.hover' } }}
                     >
                         Next
                     </Button>
@@ -197,19 +179,20 @@ const BlogPage: React.FC = () => {
     // Blog List View
     return (
         <Box sx={{ py: { xs: 2, sm: 3, md: 4 } }}>
-            <Typography variant="h5" gutterBottom sx={{ mb: 3, color: '#6B4226' }}>
+            <PyramidAnimation />
+            <Typography variant="h5" gutterBottom sx={{ mb: 3, color: 'text.primary', mt: 4 /* Add margin top to separate from pyramid */ }}> {/* Use theme text color */}
                 Blog Posts
             </Typography>
             {posts.length === 0 && <Typography>No blog posts available yet.</Typography>}
             <Grid container spacing={3}>
                 {posts.map(post => (
                     <Grid item xs={12} sm={6} md={4} key={post.slug}>
-                        <Card sx={{ boxShadow: 2, borderRadius: 2, display: 'flex', flexDirection: 'column', height: '100%' }}>
+                        <Card sx={{ boxShadow: 2, borderRadius: 2, display: 'flex', flexDirection: 'column', height: '100%', bgcolor: 'background.paper' }}> {/* Ensure card uses paper background */}
                             <CardContent sx={{ flexGrow: 1 }}>
-                                <Typography variant="h6" color="#8B5E3C" gutterBottom sx={{ fontWeight: 'bold' }}>
+                                <Typography variant="h6" color="primary.main" gutterBottom sx={{ fontWeight: 'bold' }}> {/* Use theme color */}
                                     {post.title}
                                 </Typography>
-                                <Typography variant="body2" sx={{ mb: 1, color: '#544D45' }}>
+                                <Typography variant="body2" sx={{ mb: 1, color: 'text.secondary' }}> {/* Use theme text color */}
                                     {post.summary}
                                 </Typography>
                             </CardContent>
@@ -217,12 +200,10 @@ const BlogPage: React.FC = () => {
                                 <Button
                                     onClick={() => handleSelectPost(post.slug)}
                                     variant="contained"
+                                    color="primary" // Use theme color
                                     fullWidth
-                                    sx={{
-                                        bgcolor: '#6B4226',
-                                        color: '#FFFFFF',
-                                        '&:hover': { bgcolor: '#5A3216' }
-                                    }}
+                                    // sx={{ // bgcolor and color will be inherited from variant="contained" color="primary"
+                                    // }}
                                 >
                                     Read More
                                 </Button>
@@ -235,4 +216,4 @@ const BlogPage: React.FC = () => {
     );
 };
 
-export default React.memo(BlogPage);
+export default BlogPage;

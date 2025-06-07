@@ -1,0 +1,126 @@
+/* PyramidAnimation.css - Redesigned for 2D Segmented Style */
+
+.new-pyramid-container {
+  display: flex;
+  flex-direction: column; /* Stack layers vertically */
+  align-items: center; /* Center layers horizontally */
+  padding: 20px;
+  background-color: #F8F9FA; /* Theme background.default */
+  width: 100%;
+  max-width: 600px; /* Max width of the pyramid */
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.pyramid-layer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 15px 20px; /* Vertical and horizontal padding */
+  margin-bottom: 8px; /* Space between layers */
+  border-radius: 6px; /* Slightly rounded corners for layers */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* For subtle hover */
+}
+
+.pyramid-layer:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.layer-title {
+  font-size: 1.1em; /* Base font size for titles */
+  font-weight: 500; /* Medium weight for readability */
+}
+
+/* Layer specific widths and colors */
+
+/* Layer 4 (Top): Architectural Styles & Patterns */
+.layer-architecture {
+  background-color: #79D48A; /* Lighter Green (derived from secondary.main #28A745) */
+  color: #FFFFFF; /* White text for contrast */
+  width: 60%; /* Narrowest layer */
+  min-height: 50px;
+}
+
+/* Layer 3: Design Patterns */
+.layer-design-patterns {
+  background-color: #28A745; /* Theme secondary.main (Green) */
+  color: #FFFFFF; /* White text */
+  width: 75%;
+  min-height: 55px;
+}
+
+/* Layer 2: Development Principles */
+.layer-dev-principles {
+  background-color: #007BFF; /* Theme primary.main (Blue) */
+  color: #FFFFFF; /* White text */
+  width: 90%;
+  min-height: 60px;
+}
+
+/* Layer 1 (Bottom): Fundamentals */
+.layer-fundamentals {
+  background-color: #0056b3; /* Darker Blue (derived from primary.main #007BFF) */
+  color: #FFFFFF; /* White text */
+  width: 100%; /* Widest layer */
+  min-height: 65px;
+  margin-bottom: 0; /* No margin for the last layer */
+}
+
+/* Responsive adjustments for text size if needed */
+@media (max-width: 768px) {
+  .layer-title {
+    font-size: 1em;
+  }
+  .pyramid-layer {
+    padding: 12px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .layer-title {
+    font-size: 0.9em;
+  }
+   .new-pyramid-container {
+    padding: 15px;
+  }
+  .pyramid-layer {
+    width: 95% !important; /* Make all layers almost full width on very small screens */
+    margin-bottom: 6px;
+  }
+  .layer-architecture { min-height: 40px; }
+  .layer-design-patterns { min-height: 45px; }
+  .layer-dev-principles { min-height: 50px; }
+  .layer-fundamentals { min-height: 55px; }
+}
+
+/* Remove old 3D styles - these selectors might not exist anymore or are irrelevant */
+.pyramid-container { /* Old container, if it had perspective or transform-style */
+  perspective: none;
+}
+
+.pyramid { /* Old rotating element */
+  transform-style: flat;
+  animation: none;
+}
+
+.layer { /* Old generic layer class if it had 3D transforms */
+  transform: none;
+  clip-path: none;
+  position: static; /* Reset from absolute if it was */
+  box-shadow: none; /* Reset if defaults are not desired, new ones are on .pyramid-layer */
+  border: none;
+}
+
+/* Clear any specific old layer styles like .layer-1, .layer-2 etc. if they were for 3D */
+.layer-1, .layer-2, .layer-3, .layer-4 {
+  /* These classes are now for the new structure, so only new styles should apply.
+     Any old transform, clip-path, z-index, specific background from 3D should be overridden
+     by the new .pyramid-layer and specific .layer-xxx styles above.
+     If they are not overridden, explicitly reset them here if needed.
+     Example: transform: none; clip-path: none; background-color: transparent;
+  */
+}

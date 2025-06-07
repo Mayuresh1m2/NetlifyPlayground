@@ -7,14 +7,10 @@ import Footer from './components/Footer';
 import AboutMePage from './pages/AboutMePage';
 import ContactPage from './pages/ContactPage';
 import BlogPage from './pages/BlogPage';
-import usePerformanceMeasure from './hooks/usePerformanceMeasure'; // Import the hook
-import PerformanceMonitor from './components/PerformanceMonitor'; // Import PerformanceMonitor
 
 type Section = "About Me" | "Contact" | "Blog";
 
 const App: React.FC = () => {
-    usePerformanceMeasure('App'); // Instrument App component
-
     const [currentSection, setCurrentSection] = useState<Section>("About Me");
     const [opacity, setOpacity] = useState(1);
     const [displayedSectionKey, setDisplayedSectionKey] = useState<Section>("About Me");
@@ -112,15 +108,16 @@ const App: React.FC = () => {
             onClick={() => setCurrentSection(sectionName)}
             startIcon={startIcon}
             endIcon={endIcon}
-            sx={{
+            sx={(theme) => ({ // Wrapped with (theme) => ({...})
                 mx: 1,
                 minWidth: 'auto', // Allow button to be smaller if only icon + short text
                 paddingLeft: endIcon ? '12px' : (startIcon ? '8px' : '12px'), // Adjust padding based on icons
                 paddingRight: startIcon ? '12px' : (endIcon ? '8px' : '12px'),
-                color: currentSection === sectionName ? '#FFF' : '#6B4226',
-                bgcolor: currentSection === sectionName ? '#6B4226' : 'transparent',
+                // Updated colors to use theme.palette
+                color: currentSection === sectionName ? theme.palette.primary.contrastText : theme.palette.text.primary,
+                bgcolor: currentSection === sectionName ? theme.palette.primary.main : 'transparent',
                 '&:hover': {
-                    bgcolor: currentSection === sectionName ? '#5A3216' : '#F0EAE6',
+                    bgcolor: currentSection === sectionName ? theme.palette.primary.dark : theme.palette.action.hover,
                 },
                 // Styling for the icons themselves if needed
                 '.MuiButton-startIcon .MuiSvgIcon-root': {
@@ -130,37 +127,37 @@ const App: React.FC = () => {
                 '.MuiButton-endIcon .MuiSvgIcon-root': {
                     fontSize: '1.1rem', // Example size
                     marginLeft: '4px', // Space between text and icon
-                }
-            }}
+                } // End of styles object
+            })}
         >
             {sectionName}
         </Button>
     );
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', bgcolor: '#FFF8F0' }}>
-            <AppBar position="sticky" sx={{ bgcolor: '#FFF8F0', boxShadow: '0 2px 4px -1px rgba(107, 66, 38, 0.2)', zIndex: 1200 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}> {/* Removed hardcoded bgcolor */}
+            <AppBar position="sticky" sx={{ bgcolor: 'primary.main', boxShadow: '0 2px 4px -1px rgba(0,0,0,0.2)', zIndex: 1200 }}> {/* Use theme primary for AppBar */}
                 <Container maxWidth="md">
                     <Toolbar sx={{ justifyContent: 'space-between', padding: { xs: 0 } }}>
-                        <Typography variant="h6" sx={{ color: '#6B4226', fontWeight: 'bold' }}>
+                        <Typography variant="h6" sx={{ color: 'primary.contrastText', fontWeight: 'bold' }}> {/* Use contrast text for AppBar title */}
                             Developer Portfolio
                         </Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <NavButton sectionName="About Me" />
                             <NavButton
                                 sectionName="Contact"
-                                endIcon={currentSection === "About Me" ? <ArrowForwardIcon sx={{ fontSize: '1rem' }} /> : undefined}
+                                endIcon={currentSection === "About Me" ? <ArrowForwardIcon sx={{ fontSize: '1rem', color: currentSection === "Contact" ? 'primary.contrastText' : 'text.secondary' }} /> : undefined}
                             />
                             <NavButton
                                 sectionName="Blog"
-                                endIcon={currentSection === "About Me" ? <ArrowDownwardIcon sx={{ fontSize: '1rem' }} /> : undefined}
+                                endIcon={currentSection === "About Me" ? <ArrowDownwardIcon sx={{ fontSize: '1rem', color: currentSection === "Blog" ? 'primary.contrastText' : 'text.secondary' }} /> : undefined}
                             />
                         </Box>
                     </Toolbar>
                 </Container>
             </AppBar>
 
-            <Container component="main" maxWidth="md" sx={{ flexGrow: 1, py: 3 }}>
+            <Container component="main" maxWidth="md" sx={{ flexGrow: 1, py: 3, bgcolor: 'background.default' }}> {/* Ensure main content area also uses theme background */}
                 <Box
                     key={displayedSectionKey} // Ensures component re-renders for transition, not strictly needed with opacity alone
                     sx={{
@@ -173,7 +170,6 @@ const App: React.FC = () => {
                 </Box>
             </Container>
             <Footer />
-            <PerformanceMonitor /> {/* Add PerformanceMonitor here */}
         </Box>
     );
 };

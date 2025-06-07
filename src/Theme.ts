@@ -4,19 +4,20 @@ const warmTheme = createTheme({
     palette: {
         mode: 'light',
         primary: {
-            main: '#D97706',  // warm amber/orange
-            contrastText: '#fff',
+            main: '#007BFF',  // Professional Blue
+            contrastText: '#FFFFFF',
         },
         secondary: {
-            main: '#F97316',  // bright orange
+            main: '#28A745',  // Professional Green
+            contrastText: '#FFFFFF',
         },
         background: {
-            default: '#FFF7ED',  // soft warm off-white
-            paper: '#FFF1E0',    // paper slightly warmer
+            default: '#F8F9FA',  // Off-white
+            paper: '#FFFFFF',    // White
         },
         text: {
-            primary: '#4B2C20', // warm dark brownish
-            secondary: '#7C4A32', // lighter brown
+            primary: '#212529', // Near black
+            secondary: '#495057', // Dark gray
         },
     },
     typography: {
