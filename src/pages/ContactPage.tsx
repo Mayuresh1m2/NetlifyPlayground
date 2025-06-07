@@ -15,17 +15,17 @@ const ContactPage: React.FC = () => (
             component="h1"
             gutterBottom
             sx={{
-                color: '#6B4226',
+                color: 'text.primary', // Use theme color
                 fontWeight: 'bold',
                 mb: 3 // Increased margin bottom
             }}
         >
             Contact Me
         </Typography>
-        <Typography variant="body1" sx={{ mb: 2, color: '#4E4238' }}> {/* Slightly darker text for intro */}
+        <Typography variant="body1" sx={{ mb: 2, color: 'text.secondary' }}> {/* Use theme color */}
             Feel free to connect with me on LinkedIn for professional inquiries or collaborations.
         </Typography>
-        <Typography variant="body1" sx={{ color: '#5D4037' }}> {/* Standard paragraph text color */}
+        <Typography variant="body1" sx={{ color: 'text.secondary' }}> {/* Use theme color */}
             You can reach out via my profile on{' '}
             <Link
                 href="https://www.linkedin.com/in/mayuresh-srivastava-38869839"
@@ -33,9 +33,9 @@ const ContactPage: React.FC = () => (
                 rel="noopener noreferrer"
                 underline="hover"
                 sx={{
-                    color: '#8B5E3C',
+                    color: 'primary.main', // Use theme color
                     fontWeight: 'medium',
-                    '&:hover': { color: '#6B4226', textDecoration: 'underline' }
+                    '&:hover': { color: 'primary.dark', textDecoration: 'underline' } // Use theme color
                 }}
             >
                 LinkedIn

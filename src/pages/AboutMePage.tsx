@@ -69,7 +69,7 @@ const AboutMePage: React.FC = () => {
     if (isLoading) {
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
-                <CircularProgress sx={{ color: '#6B4226' }} />
+                <CircularProgress color="primary" /> {/* Use theme color */}
             </Box>
         );
     }
@@ -86,10 +86,9 @@ const AboutMePage: React.FC = () => {
                             sx={{
                                 width: { xs: 150, sm: 200, md: 220 }, // Responsive size
                                 height: { xs: 150, sm: 200, md: 220 },
-                                // mb: { xs: 2, md: 0 }, // Margin bottom removed to be handled by wrapper or silhouette
                                 mx: 'auto', // Center avatar
                                 boxShadow: 3,
-                                border: '3px solid #FFF8F0' // Optional: subtle border
+                                border: (theme) => `3px solid ${theme.palette.background.paper}` // Use theme color
                             }}
                         />
                         <DynamicSilhouette />
@@ -105,9 +104,9 @@ const AboutMePage: React.FC = () => {
                 <Box sx={{ mt: { xs: 4, sm: 5, md: 6 } }}> {/* Responsive top margin */}
                     <Typography variant="h5" component="h2" gutterBottom
                         sx={{
-                            color: '#6B4226',
+                            color: 'text.primary', // Use theme color
                             fontWeight: 'bold',
-                            borderBottom: '2px solid #8B5E3C', // Visual separator
+                            borderBottom: (theme) => `2px solid ${theme.palette.divider}`, // Use theme color
                             pb: 1, // Padding bottom for the border
                             mb: 3 // Margin bottom for spacing before chips
                         }}
@@ -119,15 +118,15 @@ const AboutMePage: React.FC = () => {
                             <Chip
                                 key={index}
                                 label={skill}
-                                variant="filled" // Changed to filled for more pop
+                                variant="filled"
                                 sx={{
-                                    bgcolor: '#E0CDB6', // A lighter brown/beige shade from the palette
-                                    color: '#3E2723', // Darker text for contrast
+                                    bgcolor: 'secondary.main', // Use theme color
+                                    color: 'secondary.contrastText', // Use theme color
                                     fontWeight: 500,
                                     fontSize: '0.875rem',
-                                    p: '0.5rem 0.75rem', // More padding
+                                    p: '0.5rem 0.75rem',
                                     '&:hover': {
-                                        bgcolor: '#D3BFA8'
+                                        bgcolor: 'secondary.dark' // Use theme color (or a calculated darker shade)
                                     }
                                 }}
                             />

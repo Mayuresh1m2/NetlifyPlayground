@@ -141,14 +141,14 @@ const BlogPage: React.FC = () => {
                     onClick={handleBackToList}
                     sx={{
                         mb: 2,
-                        color: '#6B4226',
-                        '&:hover': { bgcolor: '#F0EAE6' },
+                        color: 'primary.main', // Use theme color
+                        '&:hover': { bgcolor: 'action.hover' }, // Use theme hover
                         mt: 4 // Add margin top to separate from pyramid
                     }}
                 >
                     Back to Blog List
                 </Button>
-                <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#6B4226', mt: 1, mb: 2 }}>
+                <Typography variant="h4" component="h1" gutterBottom sx={{ color: 'text.primary', mt: 1, mb: 2 }}> {/* Use theme text color */}
                     {currentPost.title}
                 </Typography>
                 <ContentRenderer content={currentPost.content} contentType={currentPost.contentType || 'markdown'} />
@@ -157,7 +157,8 @@ const BlogPage: React.FC = () => {
                         startIcon={<ArrowBackIcon />}
                         onClick={() => navigatePost('prev')}
                         variant="outlined"
-                        sx={{ borderColor: '#8B5E3C', color: '#8B5E3C', '&:hover': { borderColor: '#6B4226', bgcolor: '#F0EAE6', color: '#6B4226' } }}
+                        color="primary" // Use theme color
+                        sx={{ '&:hover': { bgcolor: 'action.hover' } }}
                     >
                         Previous
                     </Button>
@@ -165,7 +166,8 @@ const BlogPage: React.FC = () => {
                         endIcon={<ArrowForwardIcon />}
                         onClick={() => navigatePost('next')}
                         variant="outlined"
-                        sx={{ borderColor: '#8B5E3C', color: '#8B5E3C', '&:hover': { borderColor: '#6B4226', bgcolor: '#F0EAE6', color: '#6B4226' } }}
+                        color="primary" // Use theme color
+                        sx={{ '&:hover': { bgcolor: 'action.hover' } }}
                     >
                         Next
                     </Button>
@@ -178,19 +180,19 @@ const BlogPage: React.FC = () => {
     return (
         <Box sx={{ py: { xs: 2, sm: 3, md: 4 } }}>
             <PyramidAnimation />
-            <Typography variant="h5" gutterBottom sx={{ mb: 3, color: '#6B4226', mt: 4 /* Add margin top to separate from pyramid */ }}>
+            <Typography variant="h5" gutterBottom sx={{ mb: 3, color: 'text.primary', mt: 4 /* Add margin top to separate from pyramid */ }}> {/* Use theme text color */}
                 Blog Posts
             </Typography>
             {posts.length === 0 && <Typography>No blog posts available yet.</Typography>}
             <Grid container spacing={3}>
                 {posts.map(post => (
                     <Grid item xs={12} sm={6} md={4} key={post.slug}>
-                        <Card sx={{ boxShadow: 2, borderRadius: 2, display: 'flex', flexDirection: 'column', height: '100%' }}>
+                        <Card sx={{ boxShadow: 2, borderRadius: 2, display: 'flex', flexDirection: 'column', height: '100%', bgcolor: 'background.paper' }}> {/* Ensure card uses paper background */}
                             <CardContent sx={{ flexGrow: 1 }}>
-                                <Typography variant="h6" color="#8B5E3C" gutterBottom sx={{ fontWeight: 'bold' }}>
+                                <Typography variant="h6" color="primary.main" gutterBottom sx={{ fontWeight: 'bold' }}> {/* Use theme color */}
                                     {post.title}
                                 </Typography>
-                                <Typography variant="body2" sx={{ mb: 1, color: '#544D45' }}>
+                                <Typography variant="body2" sx={{ mb: 1, color: 'text.secondary' }}> {/* Use theme text color */}
                                     {post.summary}
                                 </Typography>
                             </CardContent>
@@ -198,12 +200,10 @@ const BlogPage: React.FC = () => {
                                 <Button
                                     onClick={() => handleSelectPost(post.slug)}
                                     variant="contained"
+                                    color="primary" // Use theme color
                                     fullWidth
-                                    sx={{
-                                        bgcolor: '#6B4226',
-                                        color: '#FFFFFF',
-                                        '&:hover': { bgcolor: '#5A3216' }
-                                    }}
+                                    // sx={{ // bgcolor and color will be inherited from variant="contained" color="primary"
+                                    // }}
                                 >
                                     Read More
                                 </Button>

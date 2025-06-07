@@ -7,14 +7,14 @@ const Footer: React.FC = () => (
         sx={{
             py: 3,
             px: 2,
-            mt: 'auto', // Pushes footer to the bottom if content is short (already handled by App.tsx flex)
-            backgroundColor: '#FFF8F0', // Match AppBar and page background
-            borderTop: '1px solid rgba(107, 66, 38, 0.12)', // Subtle top border using theme color
+            mt: 'auto',
+            backgroundColor: (theme) => theme.palette.background.paper, // Use theme's paper color
+            borderTop: (theme) => `1px solid ${theme.palette.divider}`, // Use theme's divider color
             textAlign: 'center'
         }}
     >
         <Container maxWidth="md">
-            <Typography variant="body2" sx={{ color: '#8B5E3C' /* Using a theme color */ }}>
+            <Typography variant="body2" sx={{ color: 'text.secondary' /* Use theme's secondary text color */ }}>
                 © {new Date().getFullYear()} Developer Portfolio
             </Typography>
         </Container>

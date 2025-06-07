@@ -4,19 +4,20 @@ const warmTheme = createTheme({
     palette: {
         mode: 'light',
         primary: {
-            main: '#D97706',  // warm amber/orange
-            contrastText: '#fff',
+            main: '#5D737E',  // New primary color
+            contrastText: '#FFFFFF', // Contrast for new primary
         },
         secondary: {
-            main: '#F97316',  // bright orange
+            main: '#8C9EA3',  // New secondary color
+            contrastText: '#000000', // Contrast for new secondary
         },
         background: {
-            default: '#FFF7ED',  // soft warm off-white
-            paper: '#FFF1E0',    // paper slightly warmer
+            default: '#EAEAEA',  // New background default
+            paper: '#F5F5F5',    // New background paper
         },
         text: {
-            primary: '#4B2C20', // warm dark brownish
-            secondary: '#7C4A32', // lighter brown
+            primary: '#333333', // New text primary
+            secondary: '#555555', // New text secondary
         },
     },
     typography: {
