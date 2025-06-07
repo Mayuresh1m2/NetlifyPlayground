@@ -108,7 +108,7 @@ const App: React.FC = () => {
             onClick={() => setCurrentSection(sectionName)}
             startIcon={startIcon}
             endIcon={endIcon}
-            sx={{
+            sx={(theme) => ({ // Wrapped with (theme) => ({...})
                 mx: 1,
                 minWidth: 'auto', // Allow button to be smaller if only icon + short text
                 paddingLeft: endIcon ? '12px' : (startIcon ? '8px' : '12px'), // Adjust padding based on icons
