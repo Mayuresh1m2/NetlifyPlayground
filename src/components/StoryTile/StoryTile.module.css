@@ -1,0 +1,43 @@
+/* StoryTile.module.css */
+.storyTile {
+  opacity: 0; /* Initial state for fade-in animation */
+  transform: scale(0.95); /* Initial state for scale-up part of fade-in */
+}
+
+.storyTile.fade-in {
+  animation-name: fadeInScaleUp;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards; /* Keep the state of the last keyframe */
+  animation-timing-function: ease-out;
+}
+
+.storyTile.slide-up {
+  transform: translateY(20px) scale(0.95); /* Initial state for slide-up */
+  animation-name: slideUpFadeIn;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+}
+
+
+@keyframes fadeInScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUpFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

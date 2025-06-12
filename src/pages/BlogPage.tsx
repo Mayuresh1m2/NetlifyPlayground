@@ -142,7 +142,14 @@ const BlogPage: React.FC = () => {
                     sx={{
                         mb: 2,
                         color: 'primary.main', // Use theme color
-                        '&:hover': { bgcolor: 'action.hover' }, // Use theme hover
+                        transition: 'all 0.2s ease-in-out',
+                        '&:hover': {
+                            bgcolor: 'action.hover', // Use theme hover
+                            transform: 'scale(1.03)',
+                        },
+                        '&:active': {
+                            transform: 'scale(0.97)',
+                        },
                         mt: 4 // Add margin top to separate from pyramid
                     }}
                 >
@@ -158,7 +165,16 @@ const BlogPage: React.FC = () => {
                         onClick={() => navigatePost('prev')}
                         variant="outlined"
                         color="primary" // Use theme color
-                        sx={{ '&:hover': { bgcolor: 'action.hover' } }}
+                        sx={{
+                            transition: 'all 0.2s ease-in-out',
+                            '&:hover': {
+                                bgcolor: 'action.hover',
+                                transform: 'scale(1.03)',
+                            },
+                            '&:active': {
+                                transform: 'scale(0.97)',
+                            },
+                        }}
                     >
                         Previous
                     </Button>
@@ -167,7 +183,16 @@ const BlogPage: React.FC = () => {
                         onClick={() => navigatePost('next')}
                         variant="outlined"
                         color="primary" // Use theme color
-                        sx={{ '&:hover': { bgcolor: 'action.hover' } }}
+                        sx={{
+                            transition: 'all 0.2s ease-in-out',
+                            '&:hover': {
+                                bgcolor: 'action.hover',
+                                transform: 'scale(1.03)',
+                            },
+                            '&:active': {
+                                transform: 'scale(0.97)',
+                            },
+                        }}
                     >
                         Next
                     </Button>
@@ -187,7 +212,19 @@ const BlogPage: React.FC = () => {
             <Grid container spacing={3}>
                 {posts.map(post => (
                     <Grid item xs={12} sm={6} md={4} key={post.slug}>
-                        <Card sx={{ boxShadow: 2, borderRadius: 2, display: 'flex', flexDirection: 'column', height: '100%', bgcolor: 'background.paper' }}> {/* Ensure card uses paper background */}
+                        <Card sx={{
+                            boxShadow: 2,
+                            borderRadius: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: '100%',
+                            bgcolor: 'background.paper',
+                            transition: 'all 0.2s ease-in-out',
+                            '&:hover': {
+                                transform: 'translateY(-4px) scale(1.01)',
+                                boxShadow: 6, // Elevate shadow on hover
+                            }
+                        }}> {/* Ensure card uses paper background */}
                             <CardContent sx={{ flexGrow: 1 }}>
                                 <Typography variant="h6" color="primary.main" gutterBottom sx={{ fontWeight: 'bold' }}> {/* Use theme color */}
                                     {post.title}
@@ -202,8 +239,16 @@ const BlogPage: React.FC = () => {
                                     variant="contained"
                                     color="primary" // Use theme color
                                     fullWidth
-                                    // sx={{ // bgcolor and color will be inherited from variant="contained" color="primary"
-                                    // }}
+                                    sx={{
+                                        transition: 'all 0.2s ease-in-out',
+                                        '&:hover': {
+                                            transform: 'scale(1.03)',
+                                            // bgcolor: 'primary.dark' // MUI default hover for contained primary is already a shade darker
+                                        },
+                                        '&:active': {
+                                            transform: 'scale(0.97)',
+                                        },
+                                    }}
                                 >
                                     Read More
                                 </Button>

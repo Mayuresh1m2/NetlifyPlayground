@@ -13,7 +13,9 @@ type Section = "About Me" | "Contact" | "Blog";
 const App: React.FC = () => {
     const [currentSection, setCurrentSection] = useState<Section>("About Me");
     const [opacity, setOpacity] = useState(1);
-    const [displayedSectionKey, setDisplayedSectionKey] = useState<Section>("About Me");
+    const [transform, setTransform] = useState<string>('none');
+    const [displayedSectionKey, setDisplayedSectionKey] = useState<Section>(currentSection);
+    const [prevSectionKey, setPrevSectionKey] = useState<Section>(currentSection);
 
     // Debounce for scroll navigation
     const [isScrolling, setIsScrolling] = useState(false);
@@ -77,13 +79,45 @@ const App: React.FC = () => {
     }, [currentSection, isScrolling]);
 
     useEffect(() => {
-        setOpacity(0); // Start fade out
-        const timer = setTimeout(() => {
-            setDisplayedSectionKey(currentSection); // Change content after fade out starts
-            setOpacity(1); // Start fade in
-        }, 300); // Duration of fade out, should match CSS transition duration
-        return () => clearTimeout(timer);
-    }, [currentSection]);
+        let exitTransform = 'none';
+        let upcomingEnterTransform = 'none';
+        const slideAmount = '30px'; // How much to slide
+
+        if (prevSectionKey !== currentSection) { // Only run if section actually changed
+            if (prevSectionKey === "About Me" && currentSection === "Contact") { // Slide Left
+                exitTransform = `translateX(-${slideAmount})`;
+                upcomingEnterTransform = `translateX(${slideAmount})`;
+            } else if (prevSectionKey === "Contact" && currentSection === "About Me") { // Slide Right
+                exitTransform = `translateX(${slideAmount})`;
+                upcomingEnterTransform = `translateX(-${slideAmount})`;
+            } else if (prevSectionKey === "About Me" && currentSection === "Blog") { // Slide Up (content moves up)
+                exitTransform = `translateY(-${slideAmount})`;
+                upcomingEnterTransform = `translateY(${slideAmount})`;
+            } else if (prevSectionKey === "Blog" && currentSection === "About Me") { // Slide Down (content moves down)
+                exitTransform = `translateY(${slideAmount})`;
+                upcomingEnterTransform = `translateY(-${slideAmount})`;
+            }
+            // Default for other transitions (e.g., Contact <-> Blog) will be a fade if not specified here
+
+            setOpacity(0);
+            setTransform(exitTransform);
+
+            const timer = setTimeout(() => {
+                setDisplayedSectionKey(currentSection);
+                setTransform(upcomingEnterTransform); // Set initial position for new content before fade-in
+
+                // Use a nested requestAnimationFrame or a very short timeout to ensure the transform is applied before opacity change
+                requestAnimationFrame(() => {
+                    setOpacity(1);
+                    setTransform('none'); // Slide to final position
+                });
+
+                setPrevSectionKey(currentSection); // Update prevSectionKey after transition starts for next cycle
+            }, 300); // This duration should match the CSS transition for exit phase
+
+            return () => clearTimeout(timer);
+        }
+    }, [currentSection, prevSectionKey]);
 
     const renderedPage = useMemo(() => {
         switch (displayedSectionKey) {
@@ -113,11 +147,16 @@ const App: React.FC = () => {
                 minWidth: 'auto', // Allow button to be smaller if only icon + short text
                 paddingLeft: endIcon ? '12px' : (startIcon ? '8px' : '12px'), // Adjust padding based on icons
                 paddingRight: startIcon ? '12px' : (endIcon ? '8px' : '12px'),
+                transition: 'all 0.2s ease-in-out', // Smooth transitions
                 // Updated colors to use theme.palette
                 color: currentSection === sectionName ? theme.palette.primary.contrastText : theme.palette.text.primary,
                 bgcolor: currentSection === sectionName ? theme.palette.primary.main : 'transparent',
                 '&:hover': {
                     bgcolor: currentSection === sectionName ? theme.palette.primary.dark : theme.palette.action.hover,
+                    transform: 'scale(1.03)', // Slight scale up on hover
+                },
+                '&:active': {
+                    transform: 'scale(0.97)', // Slight scale down on click
                 },
                 // Styling for the icons themselves if needed
                 '.MuiButton-startIcon .MuiSvgIcon-root': {
@@ -162,7 +201,8 @@ const App: React.FC = () => {
                     key={displayedSectionKey} // Ensures component re-renders for transition, not strictly needed with opacity alone
                     sx={{
                         opacity: opacity,
-                        transition: 'opacity 0.3s ease-in-out',
+                        transform: transform,
+                        transition: 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out',
                         minHeight: 'calc(100vh - 200px)', // Ensure content area doesn't jump too much
                     }}
                 >

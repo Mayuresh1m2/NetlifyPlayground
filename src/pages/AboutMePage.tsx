@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Box, Chip, Grid, Typography, CircularProgress } from '@mui/material';
+import { Avatar, Box, Chip, Grid, Typography, CircularProgress, Paper } from '@mui/material';
 import ContentRenderer from '../components/ContentRenderer';
-import { DynamicSilhouette } from '../components';
+import { DynamicSilhouette, StoryTile } from '../components';
+import CodeIcon from '@mui/icons-material/Code';
+import PublicIcon from '@mui/icons-material/Public'; // For "World changing"
+import SmartToyIcon from '@mui/icons-material/SmartToy'; // For "Machines taking over"
 
 const AboutMePage: React.FC = () => {
     const [profileImageUrl, setProfileImageUrl] = useState<string>("");
@@ -76,26 +79,64 @@ const AboutMePage: React.FC = () => {
 
     return (
         <Box sx={{ py: { xs: 2, sm: 3, md: 4 } }}>
-            <Grid container spacing={{ xs: 2, md: 4 }} alignItems="flex-start"> {/* Changed to flex-start for better alignment if text is short */}
-                <Grid item xs={12} md={4} sx={{ textAlign: { xs: 'center', md: 'center' } }}> {/* Centering content in this grid item */}
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}> {/* Wrapper Box */}
-                        <Avatar
-                            alt="Backend Developer" // Updated alt text
-                            src={profileImageUrl}
-                            variant="rounded" // Makes it a square with rounded corners, common for profiles
-                            sx={{
-                                width: { xs: 150, sm: 200, md: 220 }, // Responsive size
-                                height: { xs: 150, sm: 200, md: 220 },
-                                mx: 'auto', // Center avatar
-                                boxShadow: 3,
-                                border: (theme) => `3px solid ${theme.palette.background.paper}` // Use theme color
-                            }}
-                        />
-                        <DynamicSilhouette />
-                    </Box>
+            <Grid container spacing={{ xs: 2, md: 4 }} alignItems="flex-start">
+                {/* Left Column: Tiles, Avatar, Silhouette */}
+                <Grid item xs={12} md={5}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6}>
+                            <Paper elevation={2} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 2, height: '100%', minHeight: {xs: 200, sm: 'auto'}, bgcolor: 'background.paper' }}>
+                                <Avatar
+                                    alt="Backend Developer"
+                                    src={profileImageUrl}
+                                    variant="rounded"
+                                    sx={{
+                                        width: { xs: 120, sm: 150 },
+                                        height: { xs: 120, sm: 150 },
+                                        boxShadow: 3,
+                                        border: (theme) => `3px solid ${theme.palette.background.default}` // Contrast with paper
+                                    }}
+                                />
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                             <StoryTile
+                                title="Dev Hard at Work"
+                                icon={<CodeIcon />}
+                                shortText="Crafting digital solutions."
+                                animationDelay="0.1s"
+                                minHeight={{xs: 120, sm: '100%'}}
+                             />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Paper elevation={2} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 1, height: '100%', minHeight: {xs: 150, sm: 'auto'}, bgcolor: 'background.paper' }}>
+                                <DynamicSilhouette />
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <StoryTile
+                                title="Embracing Change"
+                                icon={<PublicIcon />}
+                                shortText="The ever-evolving tech landscape."
+                                animationDelay="0.2s"
+                                backgroundColor="secondary.main" // Example using secondary color
+                                variant="highlight"
+                                minHeight={{xs: 120, sm: '100%'}}
+                            />
+                        </Grid>
+                         <Grid item xs={12}>
+                            <StoryTile
+                                title="Future of AI"
+                                icon={<SmartToyIcon />}
+                                shortText="Exploring new frontiers."
+                                animationDelay="0.3s"
+                                minHeight={{xs: 120, sm: 'auto'}}
+                            />
+                        </Grid>
+                    </Grid>
                 </Grid>
-                <Grid item xs={12} md={8}>
-                    {/* ContentRenderer will handle the markdown for headline and intro */}
+
+                {/* Right Column: Main Content */}
+                <Grid item xs={12} md={7}>
                     <ContentRenderer content={mainContentMd} contentType={contentType} />
                 </Grid>
             </Grid>
