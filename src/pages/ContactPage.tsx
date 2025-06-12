@@ -35,7 +35,11 @@ const ContactPage: React.FC = () => (
                 sx={{
                     color: 'primary.main', // Use theme color
                     fontWeight: 'medium',
-                    '&:hover': { color: 'primary.dark', textDecoration: 'underline' } // Use theme color
+                    transition: 'color 0.2s ease-in-out', // Smooth transition for color
+                    '&:hover': {
+                        color: 'primary.dark', // Use theme color
+                        textDecoration: 'underline',
+                    }
                 }}
             >
                 LinkedIn

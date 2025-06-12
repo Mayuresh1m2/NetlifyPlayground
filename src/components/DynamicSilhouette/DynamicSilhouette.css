@@ -18,7 +18,7 @@
 .head {
   width: 40px;
   height: 40px;
-  background-color: #333;
+  background-color: #212529; /* Theme text.primary */
   border-radius: 50%;
   position: absolute;
   top: 0;
@@ -30,7 +30,7 @@
 .body {
   width: 50px;
   height: 100px;
-  background-color: #333;
+  background-color: #212529; /* Theme text.primary */
   position: absolute;
   top: 30px; /* Positioned below the head */
   left: 50%;
@@ -42,7 +42,7 @@
 .arm {
   width: 15px;
   height: 70px;
-  background-color: #333;
+  background-color: #212529; /* Theme text.primary */
   position: absolute;
   top: 45px; /* Start from shoulder height */
   border-radius: 7.5px; /* Rounded arm */
@@ -63,7 +63,7 @@
 .leg {
   width: 20px;
   height: 80px;
-  background-color: #333;
+  background-color: #212529; /* Theme text.primary */
   position: absolute;
   bottom: 0; /* Start from the bottom */
   border-radius: 10px 10px 0 0; /* Slightly rounded top of legs */
